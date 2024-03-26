@@ -1,7 +1,9 @@
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import Header from "../compenents/Header";
 import DigitButton from "../compenents/DigitButton";
 import OperationButton from "../compenents/OperationButton";
+import History from "./History";
+
 
 export const ACTIONS = {
     ADD_DIGIT: 'add-digit',
@@ -11,9 +13,16 @@ export const ACTIONS = {
     EVALUATE: 'evaluate'
 }
 
+
+
 function reducer(state, { type, payload }) {
+
+    
+
     switch(type) {
         case ACTIONS.ADD_DIGIT:
+            //add to the history list
+            payload.history(payload.digit);
             if (state.overwrite) {
                 return {
                     ...state,
@@ -30,6 +39,8 @@ function reducer(state, { type, payload }) {
                 currOperand: `${state.currOperand || ""}${payload.digit}`,
             }
         case ACTIONS.CHOOSE_OPERATION:
+            //add to history list
+            payload.history(payload.operation);
             if (state.currOperand == null && state.prevOperand == null)
                 return state
 
@@ -131,6 +142,20 @@ function formatOperand(operand) {
 
 const Calculator = () => {
     const [{ currOperand, prevOperand, operation}, dispatch] = useReducer(reducer, {});
+    const [history, setHistory] = useState([]);
+
+    // Function to add clicked button to history
+    const addToHistory = (button) => {
+        // Limit history to 20 items
+        const updatedHistory = [button, ...history.slice(0, 19)];
+        setHistory(updatedHistory);
+    };
+
+    const clearHistory = () => {
+        setHistory([]);
+    };
+
+    
 
     return (
         <div>
@@ -145,25 +170,33 @@ const Calculator = () => {
                 </button>
             <button onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}>
                 DEL</button>
-            <OperationButton operation="÷" dispatch={dispatch} />
-            <DigitButton digit="1" dispatch={dispatch} />
-            <DigitButton digit="2" dispatch={dispatch} />
-            <DigitButton digit="3" dispatch={dispatch} />
-            <OperationButton operation="*" dispatch={dispatch} />
-            <DigitButton digit="4" dispatch={dispatch} />
-            <DigitButton digit="5" dispatch={dispatch} />
-            <DigitButton digit="6" dispatch={dispatch} />
-            <OperationButton operation="+" dispatch={dispatch} />
-            <DigitButton digit="7" dispatch={dispatch} />
-            <DigitButton digit="8" dispatch={dispatch} />
-            <DigitButton digit="9" dispatch={dispatch} />
-            <OperationButton operation="-" dispatch={dispatch} />
-            <DigitButton digit="." dispatch={dispatch} />
-            <DigitButton digit="0" dispatch={dispatch} />
+            <OperationButton operation="÷" history={addToHistory} dispatch={dispatch} />
+            <DigitButton digit="1" history={addToHistory} dispatch={dispatch} />
+            <DigitButton digit="2" history={addToHistory} dispatch={dispatch} />
+            <DigitButton digit="3" history={addToHistory} dispatch={dispatch} />
+            <OperationButton operation="*" history={addToHistory} dispatch={dispatch} />
+            <DigitButton digit="4" history={addToHistory} dispatch={dispatch} />
+            <DigitButton digit="5" history={addToHistory} dispatch={dispatch} />
+            <DigitButton digit="6" history={addToHistory} dispatch={dispatch} />
+            <OperationButton operation="+" history={addToHistory} dispatch={dispatch} />
+            <DigitButton digit="7" history={addToHistory} dispatch={dispatch} />
+            <DigitButton digit="8" history={addToHistory} dispatch={dispatch} />
+            <DigitButton digit="9" history={addToHistory} dispatch={dispatch} />
+            <OperationButton operation="-" history={addToHistory} dispatch={dispatch} />
+            <DigitButton digit="." history={addToHistory} dispatch={dispatch} />
+            <DigitButton digit="0" history={addToHistory} dispatch={dispatch} />
             <button className="span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>=</button>
             </div>
 
+            {/* <History history={history} clearHistory={clearHistory} /> */}
 
+            {/* <div>
+            <ul>
+                {history.map((item, index) => (
+                <li key={index}>{item}</li>
+                ))}
+            </ul>
+            </div> */}
 
 
 
