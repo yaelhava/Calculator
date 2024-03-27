@@ -24,7 +24,6 @@ function reducer(state, { type, payload }) {
 
     switch(type) {
         case ACTIONS.ADD_DIGIT:
-            //add to the history list
             payload.history(payload.digit);
             if (state.overwrite) {
                 return {
@@ -42,7 +41,6 @@ function reducer(state, { type, payload }) {
                 currOperand: `${state.currOperand || ""}${payload.digit}`,
             }
         case ACTIONS.CHOOSE_OPERATION:
-            //add to history list
             payload.history(payload.operation);
             if (state.currOperand == null && state.prevOperand == null)
                 return state
