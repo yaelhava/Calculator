@@ -13,7 +13,8 @@ export const ACTIONS = {
     CHOOSE_OPERATION: 'choose-operation',
     CLEAR: 'clear',
     DELETE_DIGIT: 'delete-digit',
-    EVALUATE: 'evaluate'
+    EVALUATE: 'evaluate',
+    RESTORE_STATE: 'restore-state'
 }
 
 
@@ -100,6 +101,13 @@ function reducer(state, { type, payload }) {
                 operation: null,
                 currOperand: evaluate(state)
             }
+        case ACTIONS.RESTORE_STATE:
+            return {
+                ...state,
+                currOperand: payload.currOperand ?? state.currOperand,
+                prevOperand: payload.prevOperand ?? state.prevOperand,
+                operation: payload.operation ?? state.operation
+            }
     }
 }
 
@@ -145,24 +153,18 @@ const Calculator = () => {
     const [{ currOperand, prevOperand, operation}, dispatch] = useReducer(reducer, {});
     const { history, addToHistory, clearHistory } = useContext(HistoryContext);
 
-    // const [history, setHistory] = useState([]);
+    useEffect(() => {
+        const savedState = localStorage.getItem("calculatorState");
+        if (savedState) {
+            const { currOperand, prevOperand, operation } = JSON.parse(savedState);
+            
+            dispatch({ type: ACTIONS.RESTORE_STATE, payload: { currOperand, prevOperand, operation } });
+        }
+    }, []);
 
-    // useEffect(() => {
-    //     console.log("dddddddddddddddddd");
-    //     }, [history])
-
-    // Function to add clicked button to history
-    // const addToHistory = (button) => {
-    //     // Limit history to 20 items
-    //     const updatedHistory = [button, ...history.slice(0, 19)];
-    //     setHistory(updatedHistory);
-    // };
-
-    // const clearHistory = () => {
-    //     setHistory([]);
-    // };
-
-    
+    useEffect(() => {
+        localStorage.setItem("calculatorState", JSON.stringify({ currOperand, prevOperand, operation }));
+    }, [currOperand, prevOperand, operation]);
 
     return (
         <div>

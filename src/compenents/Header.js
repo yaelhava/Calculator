@@ -6,12 +6,11 @@ import { HistoryContext } from '../HistoryContext';
 
 export default function Header() {
     const navigate = useNavigate();
-    // const location = useLocation();
-    // const { state } = location;
     const { username }  = useContext(AuthContext);
     const { history, clearHistory } = useContext(HistoryContext);
     
     const handleClick = () => {
+        localStorage.removeItem('calculatorState');
         clearHistory();
         navigate("/login");
     }
