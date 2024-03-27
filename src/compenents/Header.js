@@ -16,15 +16,19 @@ export default function Header() {
     }
 
     return <nav className="nav">
-        <ul>
+        <div className="nav-left">
+        <h1 className="nav-title">Calculator App</h1>
+        <ul className="nav-links">
             <CustomLink to={"/calculator"}>Calculator</CustomLink>
             <CustomLink to={"/history"}>History</CustomLink>
         </ul>
+        </div>
 
+        <div className="nav-right">
         <h2 className='hello'>Hello {username}</h2>
 
-        <button type="button" onClick={handleClick}>Logout</button>         
-        
+        <button className="logout-button" type="button" onClick={handleClick}>Logout</button>         
+        </div>
     </nav>
 }
 
