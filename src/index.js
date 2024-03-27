@@ -5,6 +5,7 @@ import { createStore } from 'redux';
 import reducer from './reducer';
 import App from './App';
 import "./styles.css"
+import { HistoryProvider } from './HistoryContext';
 // import { BrowserRouter } from 'react-router-dom';
 
 const store = createStore(reducer);
@@ -12,9 +13,9 @@ const store = createStore(reducer);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <HistoryProvider>
         <App />
-    </Provider>
+    </HistoryProvider>
   </React.StrictMode>
 );
 

@@ -1,10 +1,14 @@
+import React, { useContext } from 'react';
 import Header from "../compenents/Header";
 import { connect } from 'react-redux';
 import { clearHistory } from "../actions";
+import { HistoryContext } from '../HistoryContext';
 
-const History = ({history, clearHistory}) => {
+const History = () => {
     // const history = props.history;
     
+    const { history, clearHistory } = useContext(HistoryContext);
+
     return (
         <div>
             <Header />
@@ -29,4 +33,4 @@ const mapDispatchToProps = {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(History);
+export default History;

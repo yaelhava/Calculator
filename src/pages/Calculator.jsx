@@ -1,10 +1,11 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useState, useContext } from "react";
 import Header from "../compenents/Header";
 import DigitButton from "../compenents/DigitButton";
 import OperationButton from "../compenents/OperationButton";
 import History from "./History";
 import { connect } from 'react-redux';
 import { addToHistory, clearHistory } from "../actions";
+import { HistoryContext } from "../HistoryContext";
 
 
 export const ACTIONS = {
@@ -142,8 +143,10 @@ function formatOperand(operand) {
     return `${INTEGER_FORMATTER.format(integer)}.${decimal}`
 }
 
-const Calculator = ({ history, addToHistory, clearHistory }) => {
+const Calculator = () => {
     const [{ currOperand, prevOperand, operation}, dispatch] = useReducer(reducer, {});
+    const { history, addToHistory, clearHistory } = useContext(HistoryContext);
+
     // const [history, setHistory] = useState([]);
 
     // useEffect(() => {
@@ -221,4 +224,4 @@ const mapDispatchToProps = {
   clearHistory,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Calculator);
+export default Calculator;
