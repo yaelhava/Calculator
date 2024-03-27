@@ -17,7 +17,6 @@ export default function Header() {
 
     return <nav className="nav">
         <div className="nav-left">
-        <h1 className="nav-title">Calculator App</h1>
         <ul className="nav-links">
             <CustomLink to={"/calculator"}>Calculator</CustomLink>
             <CustomLink to={"/history"}>History</CustomLink>
@@ -25,9 +24,11 @@ export default function Header() {
         </div>
 
         <div className="nav-right">
+        <div className="user-greeting">
         <h2 className='hello'>Hello {username}</h2>
 
         <button className="logout-button" type="button" onClick={handleClick}>Logout</button>         
+        </div>
         </div>
     </nav>
 }

@@ -12,13 +12,15 @@ const History = () => {
     return (
         <div>
             <Header />
+            <div className="history-content">
             <h2>History:</h2>
-                <button onClick={clearHistory}>Clear History</button>
-            <ul>
+                <button className="clear-button" onClick={clearHistory}>Clear History</button>
+            <ul className="history-list">
                 {history.map((item, index) => (
-                <li key={index}>{item}</li>
+                <li key={index} className="history-item">{item}</li>
                 ))}
             </ul>
+            </div>
         </div>
     )
 }
