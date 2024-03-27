@@ -1,8 +1,10 @@
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import Header from "../compenents/Header";
 import DigitButton from "../compenents/DigitButton";
 import OperationButton from "../compenents/OperationButton";
 import History from "./History";
+import { connect } from 'react-redux';
+import { addToHistory, clearHistory } from "../actions";
 
 
 export const ACTIONS = {
@@ -140,20 +142,24 @@ function formatOperand(operand) {
     return `${INTEGER_FORMATTER.format(integer)}.${decimal}`
 }
 
-const Calculator = () => {
+const Calculator = ({ history, addToHistory, clearHistory }) => {
     const [{ currOperand, prevOperand, operation}, dispatch] = useReducer(reducer, {});
-    const [history, setHistory] = useState([]);
+    // const [history, setHistory] = useState([]);
+
+    // useEffect(() => {
+    //     console.log("dddddddddddddddddd");
+    //     }, [history])
 
     // Function to add clicked button to history
-    const addToHistory = (button) => {
-        // Limit history to 20 items
-        const updatedHistory = [button, ...history.slice(0, 19)];
-        setHistory(updatedHistory);
-    };
+    // const addToHistory = (button) => {
+    //     // Limit history to 20 items
+    //     const updatedHistory = [button, ...history.slice(0, 19)];
+    //     setHistory(updatedHistory);
+    // };
 
-    const clearHistory = () => {
-        setHistory([]);
-    };
+    // const clearHistory = () => {
+    //     setHistory([]);
+    // };
 
     
 
@@ -188,8 +194,9 @@ const Calculator = () => {
             <button className="span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>=</button>
             </div>
 
+            {/* <div> */}
             {/* <History history={history} clearHistory={clearHistory} /> */}
-
+            {/* </div> */}
             {/* <div>
             <ul>
                 {history.map((item, index) => (
@@ -205,5 +212,13 @@ const Calculator = () => {
     )
 }
 
+const mapStateToProps = (state) => ({
+    history: state.history,
+  });
 
-export default Calculator;
+const mapDispatchToProps = {
+  addToHistory,
+  clearHistory,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Calculator);
