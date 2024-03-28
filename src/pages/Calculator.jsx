@@ -6,6 +6,7 @@ import History from "./History";
 import { connect } from 'react-redux';
 import { addToHistory, clearHistory } from "../actions";
 import { HistoryContext } from "../HistoryContext";
+import MinusButton from "../compenents/MinusButton";
 
 
 export const ACTIONS = {
@@ -23,7 +24,17 @@ function reducer(state, { type, payload }) {
 
     switch(type) {
         case ACTIONS.ADD_DIGIT:
-            payload.history(payload.digit);
+            if (payload.operation != null) {
+                payload.history(payload.operation);
+            }
+            else {
+                payload.history(payload.digit);
+            }
+            
+
+            // console.log()
+
+
             if (state.overwrite) {
                 return {
                     ...state,
@@ -31,25 +42,42 @@ function reducer(state, { type, payload }) {
                     overwrite: false,
                 }
             }
+            console.log(state.isMinus);
+
+            if (payload.isMinus) {
+                return {
+                    ...state,
+                    isMinus: true,
+                    currOperand: `${state.currOperand}-`
+                }
+            }
+
             if (payload.digit === "0" && state.currOperand === "0") 
                 return state
             if (payload.digit === "." && (state.currOperand == null || state.currOperand.includes("."))) 
                 return state
+
+            if (payload.isMinus && state.currOperand > 0) {
+                state.currOperand = -1 * state.currOperand;
+            }
+            //add case there is - 
+
             return {
                 ...state,
                 currOperand: `${state.currOperand || ""}${payload.digit}`,
             }
         case ACTIONS.CHOOSE_OPERATION:
             payload.history(payload.operation);
-            if (state.currOperand == null && state.prevOperand == null)
+            if (state.currOperand == null && /*payload.operation !== "-" &&*/ state.prevOperand == null)
                 return state
 
-            if (state.currOperand == null) {
+            if (state.currOperand == null /*&& payload.operation !== "-"*/) {
                 return {
                     ...state,
                     operation: payload.operation,
                 }
             }
+
 
             if (state.prevOperand == null) {
                 return {
@@ -150,6 +178,7 @@ function formatOperand(operand) {
 const Calculator = () => {
     const [{ currOperand, prevOperand, operation}, dispatch] = useReducer(reducer, {});
     const { history, addToHistory, clearHistory } = useContext(HistoryContext);
+    const {isMinus, setIsMinus} = useState(false);
 
     useEffect(() => {
         const savedState = localStorage.getItem("calculatorState");
@@ -189,7 +218,8 @@ const Calculator = () => {
             <DigitButton digit="7" history={addToHistory} dispatch={dispatch} />
             <DigitButton digit="8" history={addToHistory} dispatch={dispatch} />
             <DigitButton digit="9" history={addToHistory} dispatch={dispatch} />
-            <OperationButton operation="-" history={addToHistory} dispatch={dispatch} />
+            <MinusButton operation="-" history={addToHistory} isMinus={isMinus} currOperand={currOperand} dispatch={dispatch} />
+            {/* <OperationButton operation="-" history={addToHistory} dispatch={dispatch} /> */}
             <DigitButton digit="." history={addToHistory} dispatch={dispatch} />
             <DigitButton digit="0" history={addToHistory} dispatch={dispatch} />
             <button className="span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>=</button>
