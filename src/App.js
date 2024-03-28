@@ -3,11 +3,13 @@ import { AuthProvider } from "./AuthContext";
 import Login from "./pages/Login";
 import Calculator from "./pages/Calculator";
 import History from "./pages/History";
+import { HistoryProvider } from './HistoryContext';
 import "./styles.css";
 
 function App() {
   return (
     <div className="App">
+      <HistoryProvider>
         <AuthProvider>
           <BrowserRouter>
             <Routes>
@@ -18,6 +20,7 @@ function App() {
             </Routes>
           </BrowserRouter>
         </AuthProvider>
+        </HistoryProvider>
     </div>
   );
 }

@@ -21,8 +21,6 @@ export const ACTIONS = {
 
 function reducer(state, { type, payload }) {
 
-    
-
     switch(type) {
         case ACTIONS.ADD_DIGIT:
             payload.history(payload.digit);
@@ -35,7 +33,7 @@ function reducer(state, { type, payload }) {
             }
             if (payload.digit === "0" && state.currOperand === "0") 
                 return state
-            if (payload.digit === "." && state.currOperand.includes(".")) 
+            if (payload.digit === "." && (state.currOperand == null || state.currOperand.includes("."))) 
                 return state
             return {
                 ...state,

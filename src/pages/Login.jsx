@@ -14,21 +14,11 @@ const Login = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!username || !email) {
-            setError('Please fill in all fields');
-            return;
-        }
-
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(email)) {
-            setError('Please enter a valid email address');
-            return;
-        }
-
-        setAuthUsername(username);
-        navigate("/calculator");
+        if (validateInputs(username, email, setError)) {
+            setAuthUsername(username);
+            navigate("/calculator");
+        }        
     };
-
 
     const handleButtonClick = () => {
         setError('');
@@ -37,29 +27,54 @@ const Login = () => {
     return (
         <div className="login-container">
             <div  className='login-form'>
-                <h2>Login Page</h2>
+                <h2>Login</h2>
                 {error && <p className="error-message">{error}</p>}
                 <form onSubmit={handleSubmit}>
-                    <input 
-                    className="input-field"
-                    type="text" 
-                    placeholder="Enter your name" 
+                    <CustomInput  
+                    placeholder="Enter your name"
                     value={username} 
-                    onChange={(e) => setUsername(e.target.value)} 
-                    />
+                    onChange={setUsername} 
+                     />
                     <br />
-                    <input 
-                    className="input-field"
-                    type="text" 
-                    placeholder="Enter yout email" 
+                    <CustomInput  
+                    placeholder="Enter your email"
                     value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    />
+                    onChange={setEmail} 
+                     />
                     <br />
                     <button className="login-button" type="submit" onClick={handleButtonClick}>Login</button>
                 </form>
             </div>
         </div>
+    )
+}
+
+
+function validateInputs(username, email, setError) {
+    if (!username || !email) {
+        setError('Please fill in all fields');
+        return false;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        setError('Please enter a valid email address');
+        return false;
+    }
+
+    return true;
+}
+
+
+function CustomInput({...props}) {
+     return (
+        <input 
+            className="input-field" 
+            type="text"
+            placeholder={props.placeholder}
+            value={props.value} 
+            onChange={(e) => props.onChange(e.target.value)}
+            />
     )
 }
 
