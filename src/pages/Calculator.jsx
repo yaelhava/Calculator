@@ -30,38 +30,50 @@ function reducer(state, { type, payload }) {
             else {
                 payload.history(payload.digit);
             }
-            
+            console.log("ADD_DIGIT");
 
             // console.log()
 
 
             if (state.overwrite) {
+                console.log("ADD_DIGIT2");
                 return {
                     ...state,
                     currOperand: payload.digit,
                     overwrite: false,
                 }
             }
-            console.log(state.isMinus);
+            
 
+            
+            
             if (payload.isMinus) {
+                console.log("state.isMinus");
+
                 return {
                     ...state,
                     isMinus: true,
-                    currOperand: `${state.currOperand}-`
+                    currOperand: "-"
                 }
             }
+            
+            
+            // if (payload.operation === "-" && state.currOperand.includes("-")) {
+            //     console.log("is minus include");
+            //     return state}
 
             if (payload.digit === "0" && state.currOperand === "0") 
                 return state
             if (payload.digit === "." && (state.currOperand == null || state.currOperand.includes("."))) 
                 return state
 
-            if (payload.isMinus && state.currOperand > 0) {
-                state.currOperand = -1 * state.currOperand;
-            }
+            // if (payload.isMinus && state.currOperand > 0) {
+            //     console.log("AAAA")
+            //     state.currOperand = -1 * state.currOperand;
+            // }
             //add case there is - 
 
+            console.log("ADD_DIGIT3");
             return {
                 ...state,
                 currOperand: `${state.currOperand || ""}${payload.digit}`,
@@ -79,9 +91,15 @@ function reducer(state, { type, payload }) {
             }
 
 
+            if (state.currOperand === "-") {
+                console.log("is minus include");
+                return state}
+
+
             if (state.prevOperand == null) {
                 return {
                     ...state,
+                    overwrite: false,
                     operation: payload.operation,
                     prevOperand: state.currOperand,
                     currOperand: null,
@@ -92,6 +110,7 @@ function reducer(state, { type, payload }) {
                 ...state,
                 prevOperand: evaluate(state),
                 operation: payload.operation,
+                isMinus: false,
                 currOperand: null
             }
         case ACTIONS.CLEAR:
@@ -167,6 +186,7 @@ const INTEGER_FORMATTER = new Intl.NumberFormat("en-us", {
 })
 
 function formatOperand(operand) {
+    if (operand === "-") return "-"
     if (operand == null) return
     const [integer, decimal] = operand.split('.')
     if (decimal == null) {
@@ -224,32 +244,9 @@ const Calculator = () => {
             <DigitButton digit="0" history={addToHistory} dispatch={dispatch} />
             <button className="span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>=</button>
             </div>
-
-            {/* <div> */}
-            {/* <History history={history} clearHistory={clearHistory} /> */}
-            {/* </div> */}
-            {/* <div>
-            <ul>
-                {history.map((item, index) => (
-                <li key={index}>{item}</li>
-                ))}
-            </ul>
-            </div> */}
-
-
-
-
         </div>
     )
 }
 
-const mapStateToProps = (state) => ({
-    history: state.history,
-  });
-
-const mapDispatchToProps = {
-  addToHistory,
-  clearHistory,
-};
 
 export default Calculator;
