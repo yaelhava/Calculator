@@ -19,10 +19,6 @@ const Login = () => {
         }
     };
 
-    const handleButtonClick = () => {
-        setError('');
-    };
-
     return (
         <div className="login-container">
             <div className='login-form'>
@@ -41,7 +37,7 @@ const Login = () => {
                         onChange={setEmail}
                     />
                     <br />
-                    <button className="login-button" type="submit" onClick={handleButtonClick}>Login</button>
+                    <button className="login-button" type="submit">Login</button>
                 </form>
             </div>
         </div>
