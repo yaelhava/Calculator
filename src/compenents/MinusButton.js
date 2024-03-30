@@ -1,6 +1,6 @@
 import { ACTIONS } from "../pages/Calculator"
 
-export default function MinusButton({ dispatch, operation, currOperand, isMinus, history }) {
+export default function MinusButton({ dispatch, operation, currOperand, history }) {
 
     if (currOperand == null) {
         console.log("minusbutton");

@@ -1,11 +1,8 @@
-import { useEffect, useReducer, useState, useContext } from "react";
+import { useEffect, useReducer, useContext } from "react";
 import Header from "../compenents/Header";
 import DigitButton from "../compenents/DigitButton";
 import OperationButton from "../compenents/OperationButton";
-import History from "./History";
-import { connect } from 'react-redux';
-import { addToHistory, clearHistory } from "../actions";
-import { HistoryContext } from "../HistoryContext";
+import { HistoryContext } from "../contextes/HistoryContext";
 import MinusButton from "../compenents/MinusButton";
 
 
@@ -18,10 +15,7 @@ export const ACTIONS = {
     RESTORE_STATE: 'restore-state'
 }
 
-
-
 function reducer(state, { type, payload }) {
-
     switch(type) {
         case ACTIONS.ADD_DIGIT:
             if (payload.operation != null) {
@@ -30,72 +24,45 @@ function reducer(state, { type, payload }) {
             else {
                 payload.history(payload.digit);
             }
-            console.log("ADD_DIGIT");
-
-            // console.log()
-
-
             if (state.overwrite) {
-                console.log("ADD_DIGIT2");
                 return {
                     ...state,
                     currOperand: payload.digit,
                     overwrite: false,
                 }
             }
-            
-
-            
-            
             if (payload.isMinus) {
-                console.log("state.isMinus");
-
                 return {
                     ...state,
                     isMinus: true,
                     currOperand: "-"
                 }
             }
-            
-            
-            // if (payload.operation === "-" && state.currOperand.includes("-")) {
-            //     console.log("is minus include");
-            //     return state}
-
-            if (payload.digit === "0" && state.currOperand === "0") 
-                return state
+            if (payload.digit === "0" && state.currOperand === "0") {
+                alert("illegal operation");
+                return state 
+            }
             if (payload.digit === "." && (state.currOperand == null || state.currOperand.includes("."))) 
                 return state
-
-            // if (payload.isMinus && state.currOperand > 0) {
-            //     console.log("AAAA")
-            //     state.currOperand = -1 * state.currOperand;
-            // }
-            //add case there is - 
-
-            console.log("ADD_DIGIT3");
+            
             return {
                 ...state,
                 currOperand: `${state.currOperand || ""}${payload.digit}`,
             }
         case ACTIONS.CHOOSE_OPERATION:
             payload.history(payload.operation);
-            if (state.currOperand == null && /*payload.operation !== "-" &&*/ state.prevOperand == null)
+            if (state.currOperand == null && state.prevOperand == null){
                 return state
-
-            if (state.currOperand == null /*&& payload.operation !== "-"*/) {
+            }
+            if (state.currOperand == null) {
                 return {
                     ...state,
                     operation: payload.operation,
                 }
             }
-
-
             if (state.currOperand === "-") {
-                console.log("is minus include");
-                return state}
-
-
+                return state
+            }
             if (state.prevOperand == null) {
                 return {
                     ...state,
@@ -130,15 +97,16 @@ function reducer(state, { type, payload }) {
                     currOperand: null
                 }
             }
+
             return {
                 ...state,
                 currOperand: state.currOperand.slice(0, -1)
             }
-
         case ACTIONS.EVALUATE:
             if (state.operation == null || state.currOperand == null || state.prevOperand == null) {
                 return state;
             }
+
             return {
                 ...state, 
                 overwrite: true,
@@ -153,6 +121,8 @@ function reducer(state, { type, payload }) {
                 prevOperand: payload.prevOperand ?? state.prevOperand,
                 operation: payload.operation ?? state.operation
             }
+        default:
+            break;
     }
 }
 
@@ -176,6 +146,8 @@ function evaluate({ currOperand, prevOperand, operation }) {
         case "÷":
             computation = prev / curr
             break
+        default:
+            break;
     }
 
     return computation.toString();
@@ -197,8 +169,7 @@ function formatOperand(operand) {
 
 const Calculator = () => {
     const [{ currOperand, prevOperand, operation}, dispatch] = useReducer(reducer, {});
-    const { history, addToHistory, clearHistory } = useContext(HistoryContext);
-    const {isMinus, setIsMinus} = useState(false);
+    const { addToHistory } = useContext(HistoryContext);
 
     useEffect(() => {
         const savedState = localStorage.getItem("calculatorState");
@@ -238,7 +209,7 @@ const Calculator = () => {
             <DigitButton digit="7" history={addToHistory} dispatch={dispatch} />
             <DigitButton digit="8" history={addToHistory} dispatch={dispatch} />
             <DigitButton digit="9" history={addToHistory} dispatch={dispatch} />
-            <MinusButton operation="-" history={addToHistory} isMinus={isMinus} currOperand={currOperand} dispatch={dispatch} />
+            <MinusButton operation="-" history={addToHistory} currOperand={currOperand} dispatch={dispatch} />
             {/* <OperationButton operation="-" history={addToHistory} dispatch={dispatch} /> */}
             <DigitButton digit="." history={addToHistory} dispatch={dispatch} />
             <DigitButton digit="0" history={addToHistory} dispatch={dispatch} />

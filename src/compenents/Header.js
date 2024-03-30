@@ -1,13 +1,12 @@
 import { Link, useMatch, useResolvedPath, useNavigate } from 'react-router-dom';
-import AuthContext from '../AuthContext';
+import AuthContext from '../contextes/AuthContext';
 import { useContext } from 'react';
-import { clearHistory } from "../actions";
-import { HistoryContext } from '../HistoryContext';
+import { HistoryContext } from '../contextes/HistoryContext';
 
 export default function Header() {
     const navigate = useNavigate();
     const { username }  = useContext(AuthContext);
-    const { history, clearHistory } = useContext(HistoryContext);
+    const { clearHistory } = useContext(HistoryContext);
     
     const handleClick = () => {
         localStorage.removeItem('calculatorState');
