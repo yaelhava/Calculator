@@ -13,4 +13,6 @@ To run the application you should run the command:
 
 ### `npm start`
 
+On Login page, enter your user name and email (a valid email format for example: example@mail.com), and press on the login button.
+
 
