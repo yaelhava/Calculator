@@ -9,8 +9,8 @@ import "./styles.css";
 function App() {
   return (
     <div className="App">
-      <HistoryProvider>
-        <AuthProvider>
+      <AuthProvider>
+        <HistoryProvider>
           <BrowserRouter>
             <Routes>
               <Route index element={<Login />} />
@@ -19,8 +19,8 @@ function App() {
               <Route path="/history" element={<History />} />
             </Routes>
           </BrowserRouter>
-        </AuthProvider>
-      </HistoryProvider>
+        </HistoryProvider>
+      </AuthProvider>
     </div>
   );
 }

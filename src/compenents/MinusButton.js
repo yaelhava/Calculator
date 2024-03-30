@@ -3,7 +3,6 @@ import { ACTIONS } from "../pages/Calculator"
 export default function MinusButton({ dispatch, operation, currOperand, history }) {
 
     if (currOperand == null) {
-        console.log("minusbutton");
         return (<button onClick={() =>
             dispatch({ type: ACTIONS.ADD_DIGIT, payload: { operation, history, isMinus: true } })}>
             {operation}

@@ -39,7 +39,6 @@ function reducer(state, { type, payload }) {
                 }
             }
             if (payload.digit === "0" && state.currOperand === "0") {
-                alert("illegal operation");
                 return state
             }
             if (payload.digit === "." && (state.currOperand == null || state.currOperand.includes(".")))
@@ -122,7 +121,7 @@ function reducer(state, { type, payload }) {
                 operation: payload.operation ?? state.operation
             }
         default:
-            break;
+            return state
     }
 }
 
@@ -210,7 +209,6 @@ const Calculator = () => {
                 <DigitButton digit="8" history={addToHistory} dispatch={dispatch} />
                 <DigitButton digit="9" history={addToHistory} dispatch={dispatch} />
                 <MinusButton operation="-" history={addToHistory} currOperand={currOperand} dispatch={dispatch} />
-                {/* <OperationButton operation="-" history={addToHistory} dispatch={dispatch} /> */}
                 <DigitButton digit="." history={addToHistory} dispatch={dispatch} />
                 <DigitButton digit="0" history={addToHistory} dispatch={dispatch} />
                 <button className="span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>=</button>
