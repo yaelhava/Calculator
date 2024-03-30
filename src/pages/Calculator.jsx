@@ -16,7 +16,7 @@ export const ACTIONS = {
 }
 
 function reducer(state, { type, payload }) {
-    switch(type) {
+    switch (type) {
         case ACTIONS.ADD_DIGIT:
             if (payload.operation != null) {
                 payload.history(payload.operation);
@@ -40,18 +40,18 @@ function reducer(state, { type, payload }) {
             }
             if (payload.digit === "0" && state.currOperand === "0") {
                 alert("illegal operation");
-                return state 
-            }
-            if (payload.digit === "." && (state.currOperand == null || state.currOperand.includes("."))) 
                 return state
-            
+            }
+            if (payload.digit === "." && (state.currOperand == null || state.currOperand.includes(".")))
+                return state
+
             return {
                 ...state,
                 currOperand: `${state.currOperand || ""}${payload.digit}`,
             }
         case ACTIONS.CHOOSE_OPERATION:
             payload.history(payload.operation);
-            if (state.currOperand == null && state.prevOperand == null){
+            if (state.currOperand == null && state.prevOperand == null) {
                 return state
             }
             if (state.currOperand == null) {
@@ -108,7 +108,7 @@ function reducer(state, { type, payload }) {
             }
 
             return {
-                ...state, 
+                ...state,
                 overwrite: true,
                 prevOperand: null,
                 operation: null,
@@ -129,7 +129,7 @@ function reducer(state, { type, payload }) {
 function evaluate({ currOperand, prevOperand, operation }) {
     const prev = parseFloat(prevOperand)
     const curr = parseFloat(currOperand)
-    if (isNaN(prev) || isNaN(curr)) 
+    if (isNaN(prev) || isNaN(curr))
         return ""
 
     let computation = ""
@@ -168,14 +168,14 @@ function formatOperand(operand) {
 }
 
 const Calculator = () => {
-    const [{ currOperand, prevOperand, operation}, dispatch] = useReducer(reducer, {});
+    const [{ currOperand, prevOperand, operation }, dispatch] = useReducer(reducer, {});
     const { addToHistory } = useContext(HistoryContext);
 
     useEffect(() => {
         const savedState = localStorage.getItem("calculatorState");
         if (savedState) {
             const { currOperand, prevOperand, operation } = JSON.parse(savedState);
-            
+
             dispatch({ type: ACTIONS.RESTORE_STATE, payload: { currOperand, prevOperand, operation } });
         }
     }, []);
@@ -192,28 +192,28 @@ const Calculator = () => {
                     <div className="prev-operand">{formatOperand(prevOperand)} {operation}</div>
                     <div className="curr-operand">{formatOperand(currOperand)}</div>
                 </div>
-            <button className="span-two" onClick={() => dispatch({ type: ACTIONS.CLEAR })}>
-                AC
+                <button className="span-two" onClick={() => dispatch({ type: ACTIONS.CLEAR })}>
+                    AC
                 </button>
-            <button onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}>
-                DEL</button>
-            <OperationButton operation="÷" history={addToHistory} dispatch={dispatch} />
-            <DigitButton digit="1" history={addToHistory} dispatch={dispatch} />
-            <DigitButton digit="2" history={addToHistory} dispatch={dispatch} />
-            <DigitButton digit="3" history={addToHistory} dispatch={dispatch} />
-            <OperationButton operation="*" history={addToHistory} dispatch={dispatch} />
-            <DigitButton digit="4" history={addToHistory} dispatch={dispatch} />
-            <DigitButton digit="5" history={addToHistory} dispatch={dispatch} />
-            <DigitButton digit="6" history={addToHistory} dispatch={dispatch} />
-            <OperationButton operation="+" history={addToHistory} dispatch={dispatch} />
-            <DigitButton digit="7" history={addToHistory} dispatch={dispatch} />
-            <DigitButton digit="8" history={addToHistory} dispatch={dispatch} />
-            <DigitButton digit="9" history={addToHistory} dispatch={dispatch} />
-            <MinusButton operation="-" history={addToHistory} currOperand={currOperand} dispatch={dispatch} />
-            {/* <OperationButton operation="-" history={addToHistory} dispatch={dispatch} /> */}
-            <DigitButton digit="." history={addToHistory} dispatch={dispatch} />
-            <DigitButton digit="0" history={addToHistory} dispatch={dispatch} />
-            <button className="span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>=</button>
+                <button onClick={() => dispatch({ type: ACTIONS.DELETE_DIGIT })}>
+                    DEL</button>
+                <OperationButton operation="÷" history={addToHistory} dispatch={dispatch} />
+                <DigitButton digit="1" history={addToHistory} dispatch={dispatch} />
+                <DigitButton digit="2" history={addToHistory} dispatch={dispatch} />
+                <DigitButton digit="3" history={addToHistory} dispatch={dispatch} />
+                <OperationButton operation="*" history={addToHistory} dispatch={dispatch} />
+                <DigitButton digit="4" history={addToHistory} dispatch={dispatch} />
+                <DigitButton digit="5" history={addToHistory} dispatch={dispatch} />
+                <DigitButton digit="6" history={addToHistory} dispatch={dispatch} />
+                <OperationButton operation="+" history={addToHistory} dispatch={dispatch} />
+                <DigitButton digit="7" history={addToHistory} dispatch={dispatch} />
+                <DigitButton digit="8" history={addToHistory} dispatch={dispatch} />
+                <DigitButton digit="9" history={addToHistory} dispatch={dispatch} />
+                <MinusButton operation="-" history={addToHistory} currOperand={currOperand} dispatch={dispatch} />
+                {/* <OperationButton operation="-" history={addToHistory} dispatch={dispatch} /> */}
+                <DigitButton digit="." history={addToHistory} dispatch={dispatch} />
+                <DigitButton digit="0" history={addToHistory} dispatch={dispatch} />
+                <button className="span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>=</button>
             </div>
         </div>
     )

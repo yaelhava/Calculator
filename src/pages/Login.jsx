@@ -16,7 +16,7 @@ const Login = () => {
         if (validateInputs(username, email, setError)) {
             setAuthUsername(username);
             navigate("/calculator");
-        }        
+        }
     };
 
     const handleButtonClick = () => {
@@ -25,21 +25,21 @@ const Login = () => {
 
     return (
         <div className="login-container">
-            <div  className='login-form'>
+            <div className='login-form'>
                 <h2>Login</h2>
                 {error && <p className="error-message">{error}</p>}
                 <form onSubmit={handleSubmit}>
-                    <CustomInput  
-                    placeholder="Enter your name"
-                    value={username} 
-                    onChange={setUsername} 
-                     />
+                    <CustomInput
+                        placeholder="Enter your name"
+                        value={username}
+                        onChange={setUsername}
+                    />
                     <br />
-                    <CustomInput  
-                    placeholder="Enter your email"
-                    value={email} 
-                    onChange={setEmail} 
-                     />
+                    <CustomInput
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={setEmail}
+                    />
                     <br />
                     <button className="login-button" type="submit" onClick={handleButtonClick}>Login</button>
                 </form>
@@ -65,15 +65,15 @@ function validateInputs(username, email, setError) {
 }
 
 
-function CustomInput({...props}) {
-     return (
-        <input 
-            className="input-field" 
+function CustomInput({ ...props }) {
+    return (
+        <input
+            className="input-field"
             type="text"
             placeholder={props.placeholder}
-            value={props.value} 
+            value={props.value}
             onChange={(e) => props.onChange(e.target.value)}
-            />
+        />
     )
 }
 

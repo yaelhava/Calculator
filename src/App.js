@@ -13,14 +13,14 @@ function App() {
         <AuthProvider>
           <BrowserRouter>
             <Routes>
-              <Route index element={<Login />}  />
+              <Route index element={<Login />} />
               <Route path="/login" element={<Login />} />
               <Route path="/calculator" element={<Calculator />} />
               <Route path="/history" element={<History />} />
             </Routes>
           </BrowserRouter>
         </AuthProvider>
-        </HistoryProvider>
+      </HistoryProvider>
     </div>
   );
 }
